@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Cadastro</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-200 flex justify-center mt-20 w-full">
+    <main class="bg-white w-[400px] p-5">
+        <h1 class="font-bold text-2xl my-2">Criar Conta</h1>
+        <form class="">
+            <label for="nome">Nome</label>
+            <input class="rounded-md h-8 border w-full" type="text" id="nome">
+
+            <label for="email">Email</label>
+            <input class="rounded-md h-8 border w-full" type="email" name="email" id="email">
+
+            <label for="cep">CEP</label>
+            <input onkeyup="buscarCep()"  class="rounded-md h-8 border w-full" type="text" id="cep">
+
+            <label for="rua">Endereço</label>
+            <input class="rounded-md h-8 border w-full" type="text" id="rua">
+
+            <label for="bairro">Bairro</label>
+            <input class="rounded-md h-8 border w-full" type="text" id="bairro">
+
+            <label for="cidade">Cidade</label>
+            <input class="rounded-md h-8 border w-full" type="text" id="cidade">
+
+            <label for="uf">Estadp</label>
+            <input class="rounded-md h-8 border w-full" type="text" id="uf">
+
+            <label for="senha">Senha</label>
+            <input class="rounded-md h-8 border w-full" type="password">
+
+            <button class="rounded bg-blue-900 w-full mt-5 h-10 text-white" type="submit">Enviar</button>
+        </form>
+    </main>
+    <script src="cadastro.js"></script>
+</body>
+</html>
