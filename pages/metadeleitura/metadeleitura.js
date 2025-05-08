@@ -11,6 +11,10 @@ searchButton.addEventListener('click', (event) => {
 })
 
 function fetchBooks(query){
+    booksContainer.innerHTML = `
+    <img src="https://i.imgflip.com/71rgrt.gif" alt="carregando" class="w-[200px]"> 
+    `
+   
 
     fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&language=por`)
     .then(res => res.json())
@@ -25,12 +29,12 @@ function fetchBooks(query){
         }
 
         booksContainer.innerHTML = livrosFiltrados.map(item => {
-            const urlImagem = `https://covers.openlibrary.org/b/id/${item.cover_i}-M.jpg`
+            const urlImagem = item.cover_i ? `https://covers.openlibrary.org/b/id/${item.cover_i}-M.jpg` : `https://placehold.co/150x200@2x?text=${item.title.slice(0,30)}`
             return`
-            <div class="div-card">
+            <div class="div-card w-[60px]">
                 <div class="div-img">
-                    <img src= '${urlImagem}' alt="capa do livro">
-                    <p class="tag-p">frete grátis</p>
+                    <img src= '${urlImagem}' alt="capa do livro" class="w-[150px] h-auto mb-5">
+                    <p class="tag-p text-xs">frete grátis</p>
                 </div>
                 <div class="div-texto">
                     <div class="div-titulo">
@@ -51,12 +55,48 @@ function fetchBooks(query){
 }
 
 function adicionarLivro (capa) {
-    metaLivros.innerHTML += `
-        <div class="div-card w-[60px]">
+    const livrosSalvos = JSON.parse(localStorage.getItem('metaLivros')) || [];
+    if(!livrosSalvos.includes(capa)){
+        metaLivros.innerHTML += `
+        <div class="div-card group w-[60px] relative">
+            <button onclick="removerLivro('${capa}')" class="group-hover:block hidden absolute z-99 right-2 top-2 cursor-pointer w-10 h-10 rounded-full bg-red-700"><i class="fa-solid fa-trash"></i></button> 
             <div class="div-img">
                 <img src= '${capa}' alt="capa do livro" class="w-[150px] h-auto"> 
             </div>
         </div>
     `
+    livrosSalvos.push(capa) 
+    }
+    
+    localStorage.setItem('metaLivros', JSON.stringify(livrosSalvos))
 }
 
+
+
+document.addEventListener('DOMContentLoaded', carregarLivrosSalvos)
+
+function carregarLivrosSalvos (){
+    const livrosSalvos = JSON.parse(localStorage.getItem('metaLivros')) || [];
+    metaLivros.innerHTML = ''
+
+    livrosSalvos.forEach( capa => {
+        metaLivros.innerHTML += `
+        <div class="div-card w-[60px] relative group">
+            <button onclick="removerLivro('${capa}')" class="group-hover:block hidden absolute z-99 right-2 top-2 cursor-pointer w-10 h-10 rounded-full bg-red-700"><i class="fa-solid fa-trash"></i></button>
+            <div class="div-img">
+                <img src= '${capa}' alt="capa do livro" class="w-[150px] h-auto"> 
+            </div>
+        </div>
+    ` 
+    }
+
+    )
+}
+
+function removerLivro(capa){
+    const livrosSalvos = JSON.parse(localStorage.getItem('metaLivros'))||[];
+    const novaLista = livrosSalvos.filter(capaSalva => capaSalva !== capa)
+    localStorage.setItem('metaLivros', JSON.stringify(novaLista));
+
+    carregarLivrosSalvos()
+}
